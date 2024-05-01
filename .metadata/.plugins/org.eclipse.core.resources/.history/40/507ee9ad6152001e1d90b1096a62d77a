@@ -1,0 +1,98 @@
+package org.jsp.assignment.controller;
+
+import java.util.Scanner;
+
+import org.jsp.assignment.dao.DepartmentDao;
+import org.jsp.assignment.dao.Employeedao;
+import org.jsp.assignment.dto.Department;
+import org.jsp.assignment.dto.Employee;
+
+public class DeptartmentEmployeeController {
+	static DepartmentDao deptDao = new DepartmentDao();
+	static Employeedao empDao = new Employeedao();
+	static Scanner sc = new Scanner(System.in);
+
+	public static void main(String[] args) {
+		System.out.println(
+				"1.Save Department! \n2.Save Employee! \n3.Find Employee By Id! \n4.Verify Employee By Phone And Password! \n5.Verify Employee By Id And Password! \n6.Delete Employee By Id! \n7.Find Employee By Designation! \n8.Display All Details! \n9.Find Employee details by Id and email-id!");
+		System.out.println("---------**********----------");
+		System.out.println("Enter your choice!!");
+		int choice = sc.nextInt();
+		switch (choice) {
+		case 1:
+			saveDepartment();
+			break;
+		case 2:
+			saveEmployee();
+			break;
+//		case 3:
+//			findEmployeeById();
+//			break;
+//		case 4:
+//			verifyByPhone();
+//			break;
+//		case 5:
+//			verifyById();
+//			break;
+//		case 6:
+//			deleteEmployee();
+//			break;
+//		case 7:
+//			findEmployeeByDesignation();
+//			break;
+//		case 8:
+//			displayDetails();
+//			break;
+//		case 9:
+//			verifyByEmail();
+//			;
+//			break;
+		default:
+			System.err.println("Invalid Choice!!");
+			break;
+		}
+		sc.close();
+	}
+
+	private static void saveEmployee() {
+	   
+       Employee emp=inputEmployee();
+       emp=empDao.saveEmployee(emp,1);
+       System.out.println("Employee saved ");
+       
+	}
+
+	public static void saveDepartment() {
+       Department dept=inputDepartment();
+       dept=deptDao.saveDepartment(dept);
+       System.out.println("Department saved!!!");
+	}
+
+	public static Department inputDepartment() {
+		Department dept = new Department();
+		System.out.println("Enter Department Name!!!");
+		dept.setName(sc.next());
+		System.out.println("Enter Department Location!!!");
+		dept.setLocation(sc.next());
+		return dept;
+
+	}
+
+	public static Employee inputEmployee() {
+		Employee emp = new Employee();
+		System.out.println("Enter Employee Name!!");
+		emp.setName(sc.next());
+		System.out.println("Enter Employee Designation!!");
+		emp.setDesignation(sc.next());
+		System.out.println("Enter Employee Salary!!!");
+		emp.setSalary(sc.nextDouble());
+		System.out.println("Enter Employee Phone Number!!!");
+		emp.setPhone(sc.nextLong());
+		System.out.println("Enter Employee Email-Id!!!");
+		emp.setEmail(sc.next());
+		System.out.println("Enter Employee Password!!!");
+		emp.setPassword(sc.next());
+		return emp;
+	}
+
+}

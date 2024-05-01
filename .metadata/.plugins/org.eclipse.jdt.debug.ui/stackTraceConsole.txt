@@ -1,0 +1,8 @@
+try {
+			Person p = (Person) q.getSingleResult();
+			System.out.println("Name :" + p.getName());
+			System.out.println("Email-Id :" + p.getId().getEmail());
+			System.out.println("Phone Number :" + p.getId().getPhone());
+		} catch (Exception e) {
+			System.err.println("Invalid Phone Or Email-Id Or Password!!!");
+		}

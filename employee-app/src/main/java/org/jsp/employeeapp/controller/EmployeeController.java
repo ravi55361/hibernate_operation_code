@@ -1,0 +1,192 @@
+package org.jsp.employeeapp.controller;
+
+import java.util.List;
+import java.util.Scanner;
+
+import org.jsp.employeeapp.dao.EmployeeDao;
+import org.jsp.employeeapp.dto.Employee;
+
+public class EmployeeController {
+	static Scanner sc = new Scanner(System.in);
+	static EmployeeDao dao = new EmployeeDao();
+
+	public static void main(String[] args) {
+		System.out.println(
+				"1.Save Employee! \n2.Update Employee! \n3.Find Employee By Id! \n4.Verify Employee By Phone And Password! \n5.Verify Employee By Id And Password! \n6.Delete Employee By Id! \n7.Find Employee By Designation! \n8.Display All Details! \n9.Find Employee details by Id and email-id!");
+		System.out.println("---------**********----------");
+		System.out.println("Enter your choice!!");
+		int choice = sc.nextInt();
+		switch (choice) {
+		case 1:
+			save();
+			break;
+		case 2:
+			update();
+			break;
+		case 3:
+			findEmployeeById();
+			break;
+		case 4:
+			verifyByPhone();
+			break;
+		case 5:
+			verifyById();
+			break;
+		case 6:
+			deleteEmployee();
+			break;
+		case 7:
+			findEmployeeByDesignation();
+			break;
+		case 8:
+			displayDetails();
+			break;
+		case 9:
+			verifyByEmail();
+			;
+			break;
+		default:
+			System.err.println("Invalid Choice!!");
+			break;
+		}
+		sc.close();
+	}
+
+	// choice 1
+	public static void save() {
+		Employee e = input();
+		e = dao.saveEmployee(e);
+		System.out.println("Employee Saved with id :" + e.getEmp_id());
+	}
+
+	// choice 2
+	public static void update() {
+		System.out.println("Enter Employee Id to update!!");
+		int id = sc.nextInt();
+		Employee e = input();
+		e.setEmp_id(id);
+		e = dao.saveEmployee(e);
+		System.out.println("Employee update with id :" + e.getEmp_id());
+	}
+
+	// choice 3
+	public static void findEmployeeById() {
+		System.out.println("Enter Employee Id to display the details!!!");
+		int id = sc.nextInt();
+		Employee e = dao.findById(id);
+		if (e != null) {
+			display(e);
+		} else
+			System.err.println("You have entered Invalid Employee Id!!!");
+	}
+
+	// choice 4
+	public static void verifyByPhone() {
+		System.out.println("Enter your phone to display the details!!");
+		long phone = sc.nextLong();
+		System.out.println("Enter your password to verify the employee!!");
+		String password = sc.next();
+		Employee e = dao.verifyEmployee(phone, password);
+		if (e != null) {
+			display(e);
+		} else
+			System.err.println("Invalid Employee Phone Number or Password!!");
+	}
+
+	// choice 5
+	public static void verifyById() {
+		System.out.println("Enter your Employee Id to display the details!!");
+		int id = sc.nextInt();
+		System.out.println("Enter your password to verify the employee!!");
+		String password = sc.next();
+		Employee e = dao.verifyEmployee(id, password);
+		if (e != null) {
+			display(e);
+		} else
+			System.err.println("Invalid Employee Id or Password!!");
+	}
+
+	// choice 6
+	public static void deleteEmployee() {
+		System.out.println("Enter Id to delete the employee!!");
+		int id = sc.nextInt();
+		boolean b = dao.deleteUser(id);
+		if (b == true)
+			System.out.println("employee delete sucessfully with id !:" + id);
+		else
+			System.err.println("You have entered invalid id !!");
+	}
+
+	// choice 7
+	public static void findEmployeeByDesignation() {
+		System.out.println("Enter Employee Degisnation to display the records!!");
+		String designation = sc.next();
+		List<Employee> emp = dao.findUserByDesignation(designation);
+		if (emp.size() > 0) {
+			for (Employee e : emp) {
+				display(e);
+			}
+		} else
+			System.err.println("you have entered invalid degisnation!!!");
+	}
+
+	// Display Records
+	public static void display(Employee e) {
+		System.out.println();
+		System.out.println("Employee Id :" + e.getEmp_id());
+		System.out.println("Employee Name :" + e.getEmp_name());
+		System.out.println("Employee Phone Number :" + e.getEmp_phone());
+		System.out.println("Employee Salary :" + e.getEmp_salary());
+		System.out.println("Employee Email-Id :" + e.getEmp_email());
+		System.out.println("Employee Address :" + e.getEmp_address());
+		System.out.println("Employee Designation :" + e.getEmp_designation());
+		System.out.println("----------********************----------");
+
+	}
+
+	// take input details to user
+	public static Employee input() {
+		Employee e = new Employee();
+		System.out.println();
+		System.out.println("Enter Employee Name!!");
+		e.setEmp_name(sc.next());
+		System.out.println("Enter Employee Email-Id!!");
+		e.setEmp_email(sc.next());
+		System.out.println("Enter Employee Password!!");
+		e.setEmp_password(sc.next());
+		System.out.println("Enter Employee Designation!!");
+		e.setEmp_designation(sc.next());
+		System.out.println("Enter Employee Phone Number!!");
+		e.setEmp_phone(sc.nextLong());
+		System.out.println("Enter Employee Salary!!");
+		e.setEmp_salary(sc.nextDouble());
+		System.out.println("Enter Employee Address!!");
+		e.setEmp_address(sc.next());
+		return e;
+	}
+
+	// choice 8
+	public static void displayDetails() {
+		List<Employee> e = dao.details();
+		if (e.size() > 0) {
+			for (Employee emp : e) {
+				display(emp);
+			}
+		} else
+			System.err.println("No details present in database!!!");
+	}
+
+	// choice 9
+	public static void verifyByEmail() {
+		System.out.println("Enter Employee Id to display the record!");
+		int id = sc.nextInt();
+		System.out.println("Enter Email-Id to verify the details!");
+		String email = sc.next();
+		Employee e = dao.verifyEmployee(email, id);
+		if (e != null)
+			display(e);
+		else
+			System.err.println("Invalid Employee Id or Password!!!");
+
+	}
+}
